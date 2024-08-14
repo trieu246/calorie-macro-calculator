@@ -1,1 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie and Macro Calculator</title>
+</head>
+<body>
+    <h2>Calorie and Macro Calculator</h2>
 
+    <form id="macroCalculator">
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" required><br>
+
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" required><br>
+
+        <label for="age">Age (years):</label>
+        <input type="number" id="age" required><br>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select><br>
+
+        <label for="activityLevel">Activity Level:</label>
+        <select id="activityLevel" required>
+            <option value="1.2">Sedentary</option>
+            <option value="1.375">Slightly Active</option>
+            <option value="1.55">Moderately Active</option>
+            <option value="1.725">Very Active</option>
+            <option value="1.9">Extremely Active</option>
+        </select><br>
+
+        <button type="button" onclick="calculateMacros()">Calculate</button>
+    </form>
+
+    <h3>Results</h3>
+    <p id="results"></p>
+
+    <script>
+        function calculateMacros() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            const activityLevel = parseFloat(document.getElementById('activityLevel').value);
+
+            let BMR;
+            if (gender === 'male') {
+                BMR = 10 * weight + 6.25 * height - 5 * age + 5;
+            } else {
+                BMR = 10 * weight + 6.25 * height - 5 * age - 161;
+            }
+
+            const TDEE = BMR * activityLevel;
+            const protein = Math.round(weight * 2.2);
+            const fat = Math.round((TDEE * 0.3) / 9);
+            const carbs = Math.round((TDEE - (protein * 4 + fat * 9)) / 4);
+
+            document.getElementById('results').innerHTML = `
+                Estimated TDEE: ${TDEE.toFixed(2)} kcal/day<br>
+                Protein: ${protein} g/day<br>
+                Fat: ${fat} g/day<br>
+                Carbs: ${carbs} g/day
+            `;
+        }
+    </script>
+</body>
+</html>
